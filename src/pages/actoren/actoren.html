@@ -1,0 +1,63 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Actoren</ion-title>
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-buttons end>
+      <logout></logout>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-item>
+    <ion-searchbar [formControl]="searchForm"></ion-searchbar>
+  </ion-item>
+  <ion-item>
+    <h2>Currently we have {{ totalActoren | async }} actoren, you can create new once</h2>
+    <ion-fab right middle>
+      <button (click)="toggleCreateStatus(fab)" ion-fab color="vibrant" mini><ion-icon name="add"></ion-icon></button>
+      <ion-fab-list>
+      </ion-fab-list>
+    </ion-fab>
+  </ion-item>
+
+
+  <form *ngIf="actorCreateStatus" [formGroup]="actorForm" novalidate (ngSubmit)="save(actorForm.value, actorForm.valid, $event)">
+
+    <ion-item>
+      <ion-label color="primary" stacked>Name</ion-label>
+      <ion-input type="text" placeholder="" formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Description</ion-label>
+      <ion-textarea type="text" rows="5" cols="30" placeholder="" formControlName="description"></ion-textarea>
+    </ion-item>
+
+    <ion-buttons end>
+      <button type="submit" ion-button color="secondary">Save</button>
+    </ion-buttons>
+
+  </form>
+
+  <ion-card class="hover-mouse" *ngFor="let actor of actoren | async | customSearch : term">
+
+    <ion-card-header>
+      <h1>{{actor.name}}</h1>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>{{actor.description}}</p>
+    </ion-card-content>
+
+    <ion-buttons right>
+      <button (click)="delete(actor.$key)" ion-button color="warning">Delete</button>
+    </ion-buttons>
+
+  </ion-card>
+
+
+</ion-content>

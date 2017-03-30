@@ -1,0 +1,83 @@
+.scroll-content {
+  overflow-y: auto !important;
+}
+
+.menu-item {
+  cursor: pointer;
+}
+
+.hover-mouse {
+  cursor: pointer;
+}
+
+.login-box {
+  margin: auto;
+  width: 20%;
+  display: block;
+  padding: 20px;
+}
+
+.login-buttons {
+  margin-top: 12px;
+}
+
+.github-color {
+  background-color: #24292e;
+
+  &:hover {
+    background-color: #373b40;
+  }
+}
+
+.register-click {
+  margin-top: 12px;
+}
+
+.card-subtitle {
+  font-size: 1.0em;
+  width: 100%;
+}
+
+.author-box {
+  display: inline;
+  background-color: #E3E3E3;
+}
+
+.project-card {
+  border-left: 3.4px solid #03A9F4;
+}
+
+.avatar {
+  margin: auto;
+  width: 40%;
+
+  h2,
+  h3 {
+    text-align: center;
+  }
+  color: green;
+
+  img {
+    border-radius: 100px;
+  }
+}
+
+.profile {
+  left: 0;
+  right: 0;
+  z-index: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.profile:before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  display: block;
+  width: 1200px;
+  height: 800px;
+  filter: blur(5px);
+}

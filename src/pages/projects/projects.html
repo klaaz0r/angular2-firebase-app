@@ -1,0 +1,47 @@
+<!--
+  Generated template for the Projects page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Projecten</ion-title>
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-buttons end>
+      <logout></logout>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-searchbar [formControl]="searchForm"></ion-searchbar>
+  <ion-card class="hover-mouse" class="project-card" *ngFor="let project of projects | async | customSearch : term">
+    <div (click)="gotoProject(project.$key)">
+      <ion-card-header>
+        <h1>{{project.name}}</h1>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>{{project.description}}</p>
+      </ion-card-content>
+
+
+      <ion-item-divider class="author-box">
+        <ion-item>
+          <ion-avatar><img src="{{ (project.USER | async )?.avatar}}"></ion-avatar>
+          <ion-badge item-right> {{ (project.USER | async )?.name }}</ion-badge>
+        </ion-item>
+      </ion-item-divider>
+    </div>
+
+
+
+  </ion-card>
+  <ion-fab right bottom>
+    <button (click)="newProject()" ion-fab color="danger"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

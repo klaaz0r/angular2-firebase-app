@@ -1,0 +1,45 @@
+<ion-split-pane>
+  <!--  our side menu  -->
+  <ion-menu [content]="content">
+
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="has-header fixed-content">
+
+
+      <ion-item>
+        <div class="profile" style="background-image:url({{user?.avatar}})">
+          <div class="avatar">
+            <img src="{{user?.avatar}}">
+          </div>
+          <h2> Hi! {{ user?.name }} </h2>
+          <h3>  {{ user?.email }} </h3>
+        </div>
+
+      </ion-item>
+
+
+      <ion-list>
+        <ion-item class="menu-item" (click)="navigate('projecten')">
+          <ion-icon name="md-git-network"></ion-icon>
+          Projecten
+        </ion-item>
+        <ion-item class="menu-item" (click)="navigate('actoren')">
+          <ion-icon name="ios-people"></ion-icon>
+          Actoren
+        </ion-item>
+        <ion-item class="menu-item">
+          <ion-icon name="ios-person"></ion-icon>
+          Personen
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <!-- the main content -->
+  <ion-nav [root]="rootPage" #content main></ion-nav>
+</ion-split-pane>
