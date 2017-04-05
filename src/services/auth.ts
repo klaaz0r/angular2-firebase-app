@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
-import { Facebook } from 'ionic-native';
-import firebase from 'firebase';
 import * as crypto from 'crypto';
 import { StoreService } from './store';
 

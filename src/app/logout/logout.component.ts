@@ -20,7 +20,6 @@ export class LogoutComponent {
   ) {}
 
   logout(): void {
-    console.log('logging out')
     this.nav.setRoot(LoginPage);
     this.auth.logout();
   }

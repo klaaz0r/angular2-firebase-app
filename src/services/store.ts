@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable  } from 'angularfire2';
-import { AuthService } from './auth';
+import { AngularFire } from 'angularfire2';
+import firebase from 'firebase';
 import { Observable } from 'rxjs/Observable';
 import logger from '../logger';
-import { map, keys, filter, contains, flatten, mapObjIndexed, replace, toLower, toString, isArrayLike } from 'ramda';
+import { map, mapObjIndexed, toLower, isArrayLike, dissoc } from 'ramda';
+import * as uuid from 'node-uuid'
 
 const isUpperCase = (string) => /^[A-Z]*$/.test(string)
 
@@ -18,6 +19,16 @@ export class StoreService {
   update(path: string, data: any) {
     logger('trace', 'update db', { path, data });
     this.af.database.object(path).update(data);
+  }
+
+  upload(source): any {
+    const fileName = `${uuid.v4()}.jpg`
+    logger('trace', 'upload data to cloud', fileName);
+    return firebase.storage().ref().child(fileName).put(source)
+      .then(snapshot => {
+        logger('trace', 'result from upload', snapshot);
+        return snapshot.downloadURL
+      });
   }
 
   list(path: string, populate: boolean = false): any {

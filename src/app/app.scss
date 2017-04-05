@@ -44,7 +44,15 @@
 }
 
 .project-card {
-  border-left: 3.4px solid #03A9F4;
+  border-left: 3.4px solid #3f51b5;
+}
+
+.actor-project-list {
+  display: inline;
+}
+
+.actor-button {
+  height: 25px;
 }
 
 .avatar {
@@ -80,4 +88,9 @@
   width: 1200px;
   height: 800px;
   filter: blur(5px);
+}
+
+.canvas-box {
+  // visibility: hidden;
+// border-radius: 100px;
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, MenuController, Nav, Platform } from 'ionic-angular';
+import { Events, MenuController, Nav, Platform, ModalController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { AuthService } from '../services/auth';
@@ -7,6 +7,7 @@ import { MainPage } from '../pages/main/main';
 import { LoginPage } from '../pages/login/login';
 import { ProjectsPage } from '../pages/projects/projects';
 import { ActorenPage } from '../pages/actoren/actoren';
+import { CameraComponent } from '../pages/camera/camera';
 
 import { head } from 'ramda';
 import logger from '../logger';
@@ -30,7 +31,8 @@ export class MyApp {
     public menu: MenuController,
     public platform: Platform,
     public events: Events,
-    public auth: AuthService
+    public auth: AuthService,
+    public modalCtrl: ModalController
   ) {
 
     this.rootPage = MainPage;
@@ -61,9 +63,14 @@ export class MyApp {
     });
   }
 
+  screenshot(): void {
+    this.modalCtrl.create(CameraComponent).present();
+  }
+
   navigate(route): void {
     logger('info', 'goto route', route);
     const { page } = head(routes.filter(({ name }) => name === route))
+    this.menu.enable(false);
     this.nav.setRoot(page);
   }
 

@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Actor overview
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        Cancel
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <!--  <ion-avatar item-left>
+       <img src="{{actor.image}}">
+        </ion-avatar>     -->
+      <h2>{{actor.name}}</h2>
+      <p>{{actor.description}}</p>
+
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -74,7 +74,7 @@ export class ActorenPage {
   }
 
   save(actorObj: any, isValid: boolean, event: Event): void {
-    event.preventDefault();// prevent default submit behavior
+    event.preventDefault();// outstanding issue with ionic
     if (this.selectedActor) {
       logger('info', 'update project', { key: this.selectedActor.$key, actorObj });
       this.store.update(`actors/${this.selectedActor.$key}`, actorObj);

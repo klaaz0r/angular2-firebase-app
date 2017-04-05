@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Actor overview
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        Cancel
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <video class="image-box" #video width="250" height="250" autoplay></video>
+      <canvas class="canvas-box" #canvas width="250" height="250"></canvas>
+      <button (click)="takeScreenshot()" ion-button color="primary">
+          take picture
+        </button>
+    </ion-item>
+  </ion-list>
+</ion-content>

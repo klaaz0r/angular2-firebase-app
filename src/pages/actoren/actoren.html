@@ -16,9 +16,9 @@
     <ion-searchbar [formControl]="searchForm"></ion-searchbar>
   </ion-item>
   <ion-item>
-    <h2>Currently we have {{ totalActoren | async }} actoren, you can create new once</h2>
+    <h2>Currently {{ totalActoren | async }} actoren</h2>
     <ion-fab right middle>
-      <button (click)="toggleCreateStatus(fab)" ion-fab color="vibrant" mini><ion-icon name="add"></ion-icon></button>
+      <button (click)="toggleCreateStatus()" ion-fab color="vibrant" mini><ion-icon name="add"></ion-icon></button>
       <ion-fab-list>
       </ion-fab-list>
     </ion-fab>

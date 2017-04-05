@@ -18,30 +18,64 @@
 
 
 <ion-content>
-  <ion-searchbar [formControl]="searchForm"></ion-searchbar>
+  <ion-item>
+    <ion-searchbar [formControl]="searchForm"></ion-searchbar>
+  </ion-item>
   <ion-card class="hover-mouse" class="project-card" *ngFor="let project of projects | async | customSearch : term">
-    <div (click)="gotoProject(project.$key)">
-      <ion-card-header>
-        <h1>{{project.name}}</h1>
-      </ion-card-header>
 
-      <ion-card-content>
-        <p>{{project.description}}</p>
-      </ion-card-content>
+    <ion-fab right>
+      <button ion-fab mini><ion-icon name="md-settings"></ion-icon></button>
+      <ion-fab-list side="left">
+        <button (click)="gotoProject(project.$key)" ion-fab><ion-icon name="md-create"></ion-icon></button>
+        <button (click)="deleteProject(project.$key)" ion-fab><ion-icon name="md-trash"></ion-icon></button>
+      </ion-fab-list>
+    </ion-fab>
 
-
-      <ion-item-divider class="author-box">
-        <ion-item>
-          <ion-avatar><img src="{{ (project.USER | async )?.avatar}}"></ion-avatar>
-          <ion-badge item-right> {{ (project.USER | async )?.name }}</ion-badge>
-        </ion-item>
+    <ion-card-header>
+      <ion-item-divider ion-item light no-lines style="font-size: 1.4rem">
+        Project info
       </ion-item-divider>
-    </div>
+      <h1>{{project.name}}</h1>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>{{project.description}}</p>
+
+      <ion-item-divider ion-item light no-lines style="font-size: 1.4rem">
+        Actoren
+        <ion-icon item-right name="md-people"></ion-icon>
+      </ion-item-divider>
+
+      <div *ngIf="project.ACTOR?.length > 0">
+        <div class="actor-project-list" *ngFor="let actor of project.ACTOR">
+          <button (click)="showActor(actor)" class="actor-button" ion-button item-left outline round>
+          {{ (actor | async )?.name }}
+        </button>
+        </div>
+      </div>
+      <div *ngIf="project.ACTOR?.length === undefined">
+        <p>Nog geen actoren!</p>
+      </div>
 
 
+    </ion-card-content>
+
+    <ion-item-divider class="author-box">
+      <button ion-button outline item-right icon-left>
+        <ion-icon name="md-calendar"></ion-icon>
+        {{ project.createdAt | date:'short' }}
+      </button>
+      <button ion-button outline item-right icon-left>
+        <ion-icon name="md-person"></ion-icon>
+       Created by {{ (project.USER | async )?.name }}
+      </button>
+      <ion-avatar><img src="{{ (project.USER | async )?.avatar}}"></ion-avatar>
+    </ion-item-divider>
 
   </ion-card>
+
   <ion-fab right bottom>
-    <button (click)="newProject()" ion-fab color="danger"><ion-icon name="add"></ion-icon></button>
+    <button (click)="newProject()" ion-fab color="primery"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
+
 </ion-content>

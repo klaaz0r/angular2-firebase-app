@@ -1,12 +1,12 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ToastController, ModalController } from 'ionic-angular';
 import { StoreService } from "../../services/store";
 import { ProjectFormPage } from "../project-form/project-form";
-import { contains, values, map, toLower, reject, is, or, isEmpty } from 'ramda';
+import { toLower, reject, is, or, isEmpty } from 'ramda';
 import logger from '../../logger';
 import { FormControl } from "@angular/forms";
-import { SearchPipe } from '../../pipes/search';
+import { ActorModelPage } from '../actoren/actorModel';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -25,7 +25,9 @@ export class ProjectsPage {
     public menu: MenuController,
     public navParams: NavParams,
     public store: StoreService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public toastCtrl: ToastController,
+    public modalCtrl: ModalController
   ) {
 
     this.menu.enable(true);
@@ -41,6 +43,13 @@ export class ProjectsPage {
 
   }
 
+  showActor(actor: any): void {
+    actor.subscribe(actor => {
+      logger('info', 'open actor model', actor);
+      this.modalCtrl.create(ActorModelPage, { actor }).present();
+    }, err => logger('error', 'error populating actor for model', err))
+  }
+
   ionViewWillLeave(): void {
     //reset the search form on leaving
     this.searchForm.reset();
@@ -50,6 +59,12 @@ export class ProjectsPage {
     logger('trace', 'going to route', $key)
     //pass key to the route, open the correct one
     this.navCtrl.push(ProjectFormPage, { key: $key });
+  }
+
+  deleteProject($key): void {
+    logger('info', 'deleting project', $key)
+    this.store.remove(`projects/${$key}`);
+    this.toastCtrl.create({ message: 'deleted project', duration: 750 }).present();
   }
 
   newProject(): void {

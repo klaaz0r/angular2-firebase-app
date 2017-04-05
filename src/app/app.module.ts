@@ -9,14 +9,16 @@ import { StoreService } from '../services/store';
 
 //pipes
 import { SearchPipe } from '../pipes/search';
-console.log(SearchPipe)
+
 //pages
 import { MainPage }  from '../pages/main/main';
 import { LoginPage } from '../pages/login/login';
 import { ProjectsPage } from '../pages/projects/projects';
 import { ActorenPage } from '../pages/actoren/actoren';
+import { ActorModelPage } from '../pages/actoren/actorModel';
 import { ProjectFormPage } from '../pages/project-form/project-form';
 import { LogoutComponent } from './logout/logout.component';
+import { CameraComponent } from '../pages/camera/camera';
 
 const config = {
   apiKey: "AIzaSyDXEoiQb4w87pAGRjtic6n_hQRZnxqpenU",
@@ -35,7 +37,9 @@ const config = {
     ProjectsPage,
     ProjectFormPage,
     LogoutComponent,
-    SearchPipe
+    SearchPipe,
+    ActorModelPage,
+    CameraComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -49,7 +53,9 @@ const config = {
     ActorenPage,
     ProjectsPage,
     ProjectFormPage,
-    LogoutComponent
+    LogoutComponent,
+    ActorModelPage,
+    CameraComponent
   ],
   providers: [AuthService, StoreService, { provide: ErrorHandler, useClass: IonicErrorHandler }]
 })

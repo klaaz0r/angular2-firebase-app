@@ -12,11 +12,9 @@
 
 </ion-header>
 
-
 <ion-content>
 
-
-  <form [formGroup]="projectForm" novalidate (ngSubmit)="save(projectForm.value, projectForm.valid)">
+  <form [formGroup]="projectForm" novalidate (ngSubmit)="save(projectForm.value, projectForm.valid, $event)">
 
     <ion-item>
       <ion-label color="primary" stacked>Name</ion-label>
@@ -31,17 +29,12 @@
     <ion-item>
       <ion-label>Actoren</ion-label>
       <ion-select formControlName="ACTOR" multiple="true">
-        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="true">{{actor.name}}</ion-option>
+        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="true">
+          {{actor.name}}
+        </ion-option>
       </ion-select>
     </ion-item>
 
-    <ion-item>
-      <ion-li
-      <ion-label>Actoren</ion-label>
-      <ion-select formControlName="ACTOR" multiple="true">
-        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="true">{{actor.name}}</ion-option>
-      </ion-select>
-    </ion-item>
 
     <ion-buttons end>
       <button ion-button type="submit" color="secondary">Save</button>

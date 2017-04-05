@@ -4,8 +4,9 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Project } from '../../interfaces/project.interface';
 import { StoreService } from "../../services/store";
 import { AuthService } from "../../services/auth";
-import { merge, dissoc } from 'ramda';
+import { merge, dissoc, contains } from 'ramda';
 import logger from '../../logger';
+import moment from 'moment';
 
 @Component({
   selector: 'page-project-form',
@@ -33,7 +34,16 @@ export class ProjectFormPage {
       ACTOR: ['',]
     });
 
-    this.actoren = this.store.list('actoren')
+    this.actoren = this.store.list('actors')
+      .map(actoren => {
+        if (this.existingProject) {
+          actoren.map(actor => {
+            actor.active = contains(actor.$key, this.existingProject.ACTOR)
+            return actor
+          })
+        }
+        return actoren
+      })
 
     this.auth.getUserData()
       .subscribe(
@@ -58,14 +68,18 @@ export class ProjectFormPage {
       .setValue(currentProject.description, { onlySelf: true });
   }
 
-  save(projectObj: any, isValid: boolean): void {
+  save(projectObj: any, isValid: boolean, event: Event): void {
+    event.preventDefault();// outstanding issue with ionic
+    const timestamp = moment().format();
     //add the author key to the project (we can populate these)
     const project = merge(dissoc('user', projectObj), { USER: this.user.$key })
-
     if (this.existingProject) {
+      project.lastUpdate = timestamp;
       logger('info', 'update project', { key: this.existingProject.$key, project });
       this.store.update(`projects/${this.existingProject.$key}`, project);
     } else {
+      //createdAt is already a prop by firebase
+      project.createdAt = timestamp;
       logger('info', 'new project', project);
       this.store.push('projects', project);
     }
@@ -85,7 +99,7 @@ export class ProjectFormPage {
   }
 
   presentToast(message: string): void {
-    let toast = this.toastCtrl.create({
+    const toast = this.toastCtrl.create({
       message: message,
       duration: 1000
     });

@@ -16,8 +16,13 @@
           <div class="avatar">
             <img src="{{user?.avatar}}">
           </div>
-          <h2> Hi! {{ user?.name }} </h2>
+          <h2> Hey, {{ user?.name }}! </h2>
           <h3>  {{ user?.email }} </h3>
+          <button (click)="screenshot()" ion-button round outline color="light">
+            <!-- <ion-icon padding name="finger-print"></ion-icon> -->
+            change picture
+          </button>
+
         </div>
 
       </ion-item>
