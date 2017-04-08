@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Actor overview
+      Change profile picture
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -12,12 +12,15 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-item>
-      <video class="image-box" #video width="250" height="250" autoplay></video>
-      <canvas class="canvas-box" #canvas width="250" height="250"></canvas>
-      <button (click)="takeScreenshot()" ion-button color="primary">
-          take picture
+    <ion-item *ngIf="!tookPicture">
+      <button (click)="takeScreenshot()" rounded ion-button color="primary">
+        Take screenshot
         </button>
+      <video class="image-box" #video width="200" height="200" autoplay></video>
+    </ion-item>
+    <ion-item>
+      <h2 *ngIf="tookPicture">Looking good!</h2>
+      <canvas class="canvas-box" #canvas width="250" height="250"></canvas>
     </ion-item>
   </ion-list>
 </ion-content>

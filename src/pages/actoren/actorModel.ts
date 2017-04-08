@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { StoreService } from "../../services/store";
-import { ModalController, Platform, NavParams, ViewController } from 'ionic-angular';
+import { StoreService } from '../../services/store';
+import { Platform, NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   templateUrl: 'actorModel.html'

@@ -21,11 +21,11 @@ import { LogoutComponent } from './logout/logout.component';
 import { CameraComponent } from '../pages/camera/camera';
 
 const config = {
-  apiKey: "AIzaSyDXEoiQb4w87pAGRjtic6n_hQRZnxqpenU",
-  authDomain: "actortemplateapp-b0783.firebaseapp.com",
-  databaseURL: "https://actortemplateapp-b0783.firebaseio.com",
-  storageBucket: "actortemplateapp-b0783.appspot.com",
-  messagingSenderId: "1050283242427"
+  apiKey: 'AIzaSyDXEoiQb4w87pAGRjtic6n_hQRZnxqpenU',
+  authDomain: 'actortemplateapp-b0783.firebaseapp.com',
+  databaseURL: 'https://actortemplateapp-b0783.firebaseio.com',
+  storageBucket: 'actortemplateapp-b0783.appspot.com',
+  messagingSenderId: '1050283242427'
 };
 
 @NgModule({

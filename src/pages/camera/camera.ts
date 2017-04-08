@@ -1,9 +1,8 @@
-import { ViewChild, ViewChildren, Component, QueryList, ElementRef } from '@angular/core'
+import { ViewChild, Component, ElementRef } from '@angular/core'
 import { ViewController, ToastController } from 'ionic-angular';
 import { StoreService } from '../../services/store';
 import { AuthService } from '../../services/auth';
 import logger from '../../logger';
-import { assoc, dissoc } from 'ramda';
 
 @Component({
   selector: 'camera-view',
@@ -14,6 +13,7 @@ export class CameraComponent {
   @ViewChild('canvas') canvas: ElementRef;
 
   user;
+  tookPicture;
 
   constructor(
     public viewCtrl: ViewController,
@@ -29,6 +29,7 @@ export class CameraComponent {
   }
 
   ngAfterViewInit(): void {
+    this.tookPicture = false;
     const video = this.video.nativeElement;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true })
@@ -40,6 +41,7 @@ export class CameraComponent {
   }
 
   takeScreenshot(): void {
+    this.tookPicture = true;
     const context = this.canvas.nativeElement.getContext('2d');
     context.drawImage(this.video.nativeElement, 0, 0, 250, 250);
     this.canvas.nativeElement.toBlob(blob => {

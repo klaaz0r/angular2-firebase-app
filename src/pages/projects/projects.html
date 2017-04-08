@@ -61,8 +61,8 @@
     </ion-card-content>
 
     <ion-item-divider class="author-box">
-      <button ion-button outline item-right icon-left>
-        <ion-icon name="md-calendar"></ion-icon>
+      <button showWhen="!android,!windows,!ios" ion-button outline item-right icon-left>
+        <ion-icon  name="md-calendar"></ion-icon>
         {{ project.createdAt | date:'short' }}
       </button>
       <button ion-button outline item-right icon-left>

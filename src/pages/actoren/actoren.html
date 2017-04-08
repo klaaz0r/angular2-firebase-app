@@ -43,7 +43,10 @@
 
   </form>
 
-  <ion-card class="hover-mouse" *ngFor="let actor of actoren | async | customSearch : term">
+  <ion-card class="hover-mouse" *ngFor="let actor of actoren | async | customSearch : term" (click)="updateActor(actor)">
+    <ion-fab right>
+      <button (click)="delete(actor.$key)" ion-fab mini><ion-icon name="md-trash"></ion-icon></button>
+    </ion-fab>
 
     <ion-card-header>
       <h1>{{actor.name}}</h1>
@@ -52,11 +55,6 @@
     <ion-card-content>
       <p>{{actor.description}}</p>
     </ion-card-content>
-
-    <ion-buttons right>
-      <button (click)="delete(actor.$key)" ion-button color="warning">Delete</button>
-    </ion-buttons>
-
   </ion-card>
 
 

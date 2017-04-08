@@ -29,7 +29,7 @@
     <ion-item>
       <ion-label>Actoren</ion-label>
       <ion-select formControlName="ACTOR" multiple="true">
-        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="true">
+        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="active.true">
           {{actor.name}}
         </ion-option>
       </ion-select>

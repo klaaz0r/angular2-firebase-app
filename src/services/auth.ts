@@ -4,14 +4,14 @@ import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 import * as crypto from 'crypto';
 import { StoreService } from './store';
+import logger from '../logger';
 
 @Injectable()
 export class AuthService {
 
   user: any;
 
-  constructor(private af: AngularFire, private platform: Platform, private store: StoreService) {
-  }
+  constructor(private af: AngularFire, private platform: Platform, private store: StoreService) { }
 
   getUserData() {
     return Observable.create(observer => {
@@ -21,7 +21,7 @@ export class AuthService {
             .subscribe(user => {
               this.user = user;
               observer.next(user);
-            }, err => console.log('not authenticad', err));
+            }, err => logger('error', 'user not authenticad', { err }));
         } else {
           observer.error();
         }
@@ -33,6 +33,7 @@ export class AuthService {
     return Observable.create(observer => {
       this.af.auth.createUser(credentials)
         .then((authData: any) => {
+          logger('info', 'creatin user..', { authData })
           this.af.database.list('users')
             .update(authData.uid, {
               name: authData.auth.email,

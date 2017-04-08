@@ -16,10 +16,11 @@ export class LogoutComponent {
     public nav: Nav,
     public events: Events,
     public auth: AuthService,
-    public navCtrl: NavController
-  ) {}
+    public navCtrl: NavController,
+  ) { }
 
   logout(): void {
+    this.menu.enable(false);
     this.nav.setRoot(LoginPage);
     this.auth.logout();
   }

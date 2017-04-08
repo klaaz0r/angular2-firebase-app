@@ -1,8 +1,8 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ToastController, FabContainer } from 'ionic-angular';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
-import { StoreService } from "../../services/store";
+import { StoreService } from '../../services/store';
 import { length } from 'ramda';
 import logger from '../../logger';
 
@@ -60,11 +60,15 @@ export class ActorenPage {
     }
   }
 
-  presentToast(message: string): void {
-    this.toastCtrl.create({
-      message: message,
-      duration: 1000
-    }).present();
+  updateActor(actor): void {
+    this.actorCreateStatus = true;
+    this.selectedActor = actor;
+
+    (<FormControl>this.actorForm.controls['name'])
+      .setValue(actor.name, { onlySelf: true });
+
+    (<FormControl>this.actorForm.controls['description'])
+      .setValue(actor.description, { onlySelf: true });
   }
 
   delete(key): void {
@@ -84,6 +88,13 @@ export class ActorenPage {
     }
     this.actorCreateStatus = false;
     this.presentToast(`saved actor ${actorObj.name}`)
+  }
+
+  presentToast(message: string): void {
+    this.toastCtrl.create({
+      message: message,
+      duration: 1000
+    }).present();
   }
 
 }

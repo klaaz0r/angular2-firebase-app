@@ -3,7 +3,7 @@ import { AngularFire } from 'angularfire2';
 import firebase from 'firebase';
 import { Observable } from 'rxjs/Observable';
 import logger from '../logger';
-import { map, mapObjIndexed, toLower, isArrayLike, dissoc } from 'ramda';
+import { map, mapObjIndexed, toLower, isArrayLike } from 'ramda';
 import * as uuid from 'node-uuid'
 
 const isUpperCase = (string) => /^[A-Z]*$/.test(string)

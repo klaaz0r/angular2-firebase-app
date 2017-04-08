@@ -1,9 +1,8 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, ToastController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ToastController, ModalController, Platform } from 'ionic-angular';
 import { StoreService } from "../../services/store";
 import { ProjectFormPage } from "../project-form/project-form";
-import { toLower, reject, is, or, isEmpty } from 'ramda';
 import logger from '../../logger';
 import { FormControl } from "@angular/forms";
 import { ActorModelPage } from '../actoren/actorModel';
@@ -27,7 +26,8 @@ export class ProjectsPage {
     public store: StoreService,
     private sanitizer: DomSanitizer,
     public toastCtrl: ToastController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public platform: Platform,
   ) {
 
     this.menu.enable(true);
