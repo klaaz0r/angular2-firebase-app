@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { AuthService } from '../../services/auth';
 import { ProjectsPage } from '../projects/projects';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -20,6 +20,7 @@ export class LoginPage {
     public navParams: NavParams,
     public auth: AuthService,
     private form: FormBuilder,
+    private toastCtrl: ToastController,
   ) {
 
     this.loginForm = this.form.group({
@@ -29,8 +30,7 @@ export class LoginPage {
 
     this.registerForm = this.form.group({
       email: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-      password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-      name: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
+      password: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
     });
   }
 
@@ -40,32 +40,28 @@ export class LoginPage {
 
   register(credentials: any) {
     this.auth.registerUser(credentials)
-      .subscribe(() => {
-        this.toggleRegisterForm = false;
-      }, err => {
-        this.error = err;
-      });
+      .then(() => this.toggleRegisterForm = false)
+      .catch(({ message }) =>
+        this.toastCtrl.create({ message, duration: 3000, position: 'top' }).present()
+      )
   }
 
   loginWithEmail(credentials: any, isValid: boolean): void {
     this.auth.loginWithEmail(credentials)
-      .subscribe(() => this.navCtrl.setRoot(ProjectsPage),
-      err => this.error = err);
+      .then(() => this.navCtrl.setRoot(ProjectsPage))
+      .catch(err => this.error = err)
   }
 
   loginWithGithub(): void {
     this.auth.loginWithGithub()
-      .subscribe(() => this.navCtrl.setRoot(ProjectsPage),
-      err => this.error = err
-      );
+      .then(() => this.navCtrl.setRoot(ProjectsPage))
+      .catch(err => this.error = err)
   }
 
   loginWithGoogle(): void {
     this.auth.loginWithGoogle()
-      .subscribe(
-      () => this.navCtrl.setRoot(ProjectsPage),
-      err => this.error = err
-      );
+      .then(() => this.navCtrl.setRoot(ProjectsPage))
+      .catch(err => this.error = err)
   }
 
 }

@@ -42,25 +42,23 @@ export class MyApp {
         StatusBar.styleDefault();
         Splashscreen.hide();
       });
-  }
 
-  ngOnInit(): void {
-    this.platform.ready().then(_ => {
-      this.auth.getUserData()
-        .subscribe(data => {
-          if (!this.isAppInitialized) {
-            logger('info', 'user is logged in! goto to projects', data);
-            this.menu.enable(true);
-            this.nav.setRoot(ProjectsPage);
-            this.isAppInitialized = true;
-          }
-          this.user = data;
-        }, _ => {
-          logger('info', 'not logged in, goto login page');
-          this.menu.enable(false);
-          this.nav.setRoot(LoginPage)
-        });
-    });
+      this.platform.ready().then(_ => {
+        this.auth.getUserData()
+          .subscribe(data => {
+            if (!this.isAppInitialized) {
+              logger('info', 'user is logged in! goto to projects', data);
+              this.menu.enable(true);
+              this.nav.setRoot(ProjectsPage);
+              this.isAppInitialized = true;
+            }
+            this.user = data;
+          }, _ => {
+            logger('info', 'not logged in, goto login page');
+            this.menu.enable(false);
+            this.nav.setRoot(LoginPage)
+          });
+      });
   }
 
   screenshot(): void {
