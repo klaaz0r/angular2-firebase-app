@@ -27,10 +27,11 @@
     </ion-item>
 
     <ion-item>
+      {{actoren | async | json}}
       <ion-label>Actoren</ion-label>
       <ion-select formControlName="ACTOR" multiple="true">
-        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="active.true">
-          {{actor.name}}
+        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" [selected]="actor.active">
+          {{ actor.name }}
         </ion-option>
       </ion-select>
     </ion-item>

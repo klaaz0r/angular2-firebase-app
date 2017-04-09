@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthService } from '../../services/auth';
 import { ProjectsPage } from '../projects/projects';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'page-login',
@@ -29,7 +29,8 @@ export class LoginPage {
 
     this.registerForm = this.form.group({
       email: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-      password: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
+      password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
+      name: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
     });
   }
 
@@ -38,39 +39,33 @@ export class LoginPage {
   }
 
   register(credentials: any) {
-    console.log(credentials)
     this.auth.registerUser(credentials)
-      .subscribe(data => {
-        console.log(data)
+      .subscribe(() => {
         this.toggleRegisterForm = false;
-        // this.navCtrl.setRoot(ProjectsPage);
       }, err => {
-        console.log(err)
         this.error = err;
       });
   }
 
   loginWithEmail(credentials: any, isValid: boolean): void {
-    console.log(credentials)
     this.auth.loginWithEmail(credentials)
-      .subscribe(data => {
-        console.log(data)
-        this.navCtrl.setRoot(ProjectsPage);
-      }, err => {
-        console.log(err)
-        this.error = err;
-      });
+      .subscribe(() => this.navCtrl.setRoot(ProjectsPage),
+      err => this.error = err);
   }
 
-  loginWithGithub() {
+  loginWithGithub(): void {
     this.auth.loginWithGithub()
-      .subscribe(data => {
-        console.log(data)
-        this.navCtrl.setRoot(ProjectsPage);
-      }, err => {
-        console.log(err)
-        this.error = err;
-      });
+      .subscribe(() => this.navCtrl.setRoot(ProjectsPage),
+      err => this.error = err
+      );
+  }
+
+  loginWithGoogle(): void {
+    this.auth.loginWithGoogle()
+      .subscribe(
+      () => this.navCtrl.setRoot(ProjectsPage),
+      err => this.error = err
+      );
   }
 
 }

@@ -3,7 +3,7 @@ import { NavController, NavParams, ToastController} from 'ionic-angular';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { StoreService } from "../../services/store";
 import { AuthService } from "../../services/auth";
-import { merge, dissoc, contains, has } from 'ramda';
+import { merge, dissoc, contains, has, assoc } from 'ramda';
 import logger from '../../logger';
 import moment from 'moment';
 
@@ -31,17 +31,19 @@ export class ProjectFormPage {
       name: ['', [<any>Validators.minLength(5)]], description: ['',], ACTOR: [[],]
     });
 
+    //outstanding issue in ionic https://github.com/angular/angularfire2/issues/574
     this.actoren = this.store.list('actors')
       .map(actoren => {
         if (this.existingProject && has('ACTOR', this.existingProject)) {
-          actoren.map(actor => {
-            actor.active = contains(actor.$key, this.existingProject.ACTOR)
-            return actor
-          })
+          actoren.map(actor =>
+            assoc(actor, {
+              active: contains(actor.$key, this.existingProject.ACTOR)
+            }))
         }
         logger('trace', 'result from comparing', { actoren })
         return actoren
       })
+
 
     this.auth.getUserData()
       .subscribe(
@@ -92,7 +94,7 @@ export class ProjectFormPage {
   delete(): void {
     //the delete button is not show if there is no existingProject
     const key = this.existingProject.$key;
-    logger('info', 'deleting project', key)
+    logger('info', 'deleting project', key);
     this.store.remove(`projects/${key}`);
     this.presentToast('deleted project');
     this.navCtrl.pop();

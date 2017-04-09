@@ -34,35 +34,44 @@
         <ion-icon name="logo-github"></ion-icon>
         Login with Github
       </button>
+        <button type="button" class="google-color" (click)="loginWithGoogle()" ion-button icon-left full>
+        <ion-icon name="logo-google"></ion-icon>
+        Login with Google
+      </button>
         <a class="register-click" (click)="toggleRegister()">Don't have an account? register!</a>
       </ion-list>
 
     </div>
-  <!-- </ion-card> -->
+    <!-- </ion-card> -->
 
-  <div *ngIf="toggleRegisterForm">
-    <ion-card-header>
-      <h2>Register</h2>
-    </ion-card-header>
+    <div *ngIf="toggleRegisterForm">
+      <ion-card-header>
+        <h2>Register</h2>
+      </ion-card-header>
 
-    <form [formGroup]="registerForm" novalidate (ngSubmit)="register(registerForm.value, registerForm.valid)">
+      <form [formGroup]="registerForm" novalidate (ngSubmit)="register(registerForm.value, registerForm.valid)">
 
-      <ion-item>
-        <ion-label color="primary">Email</ion-label>
-        <ion-input type="text" placeholder="" formControlName="email"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label color="primary">Name</ion-label>
+          <ion-input type="text" placeholder="" formControlName="name"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label color="primary">Password</ion-label>
-        <ion-input type="password" placeholder="" formControlName="password"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label color="primary">Email</ion-label>
+          <ion-input type="text" placeholder="" formControlName="email"></ion-input>
+        </ion-item>
 
-      <ion-buttons end>
-        <button ion-button type="submit" color="secondary">Register</button>
-      </ion-buttons>
-    </form>
+        <ion-item>
+          <ion-label color="primary">Password</ion-label>
+          <ion-input type="password" placeholder="" formControlName="password"></ion-input>
+        </ion-item>
 
-  </div>
+        <ion-buttons end>
+          <button ion-button type="submit" color="secondary">Register</button>
+        </ion-buttons>
+      </form>
+
+    </div>
   </ion-card>
 
 </ion-content>
