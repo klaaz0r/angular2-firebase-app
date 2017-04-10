@@ -12,11 +12,11 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-item *ngIf="!tookPicture">
+    <ion-item class="screenshot-container" *ngIf="!tookPicture">
       <button (click)="takeScreenshot()" rounded ion-button color="primary">
         Take screenshot
         </button>
-      <video class="image-box" #video width="200" height="200" autoplay></video>
+      <video class="image-box" #video width="250" height="250" autoplay></video>
     </ion-item>
     <ion-item>
       <h2 *ngIf="tookPicture">Looking good!</h2>

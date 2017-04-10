@@ -21,6 +21,7 @@ export class ActorenPage {
   actorForm: FormGroup;
   actorCreateStatus: boolean = false;
   totalActoren: number;
+  users: any;
 
   constructor(
     public navCtrl: NavController,
@@ -34,12 +35,16 @@ export class ActorenPage {
 
     this.actorForm = this.form.group({
       name: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
-      description: ['',]
+      image: ['http://www.gravatar.com/avatar', [<any>Validators.required, <any>Validators.minLength(5)]],
+      description: ['', [<any>Validators.required, <any>Validators.minLength(50)]],
+      USER: [[],]
     });
 
     this.menu.enable(true);
-    this.actoren = this.store.list('actors');
-    this.totalActoren = this.actoren.map(ac => length(ac))
+    this.actoren = this.store.list('actors', true);
+    this.users = this.store.list('users');
+
+    this.totalActoren = this.actoren.map(actoren => length(actoren));
 
     this.searchForm = new FormControl();
 
@@ -63,12 +68,11 @@ export class ActorenPage {
   updateActor(actor): void {
     this.actorCreateStatus = true;
     this.selectedActor = actor;
-
-    (<FormControl>this.actorForm.controls['name'])
-      .setValue(actor.name, { onlySelf: true });
-
-    (<FormControl>this.actorForm.controls['description'])
-      .setValue(actor.description, { onlySelf: true });
+    //populate the form with the selected actor
+    (<FormControl>this.actorForm.controls['name']).setValue(actor.name, { onlySelf: true });
+    (<FormControl>this.actorForm.controls['description']).setValue(actor.description, { onlySelf: true });
+    (<FormControl>this.actorForm.controls['image']).setValue(actor.image, { onlySelf: true });
+    (<FormControl>this.actorForm.controls['USER']).setValue([actor.USER], { onlySelf: true });
   }
 
   delete(key): void {

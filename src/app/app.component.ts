@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, MenuController, Nav, Platform, ModalController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
+import { TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from '../services/auth';
 import { MainPage } from '../pages/main/main';
@@ -32,33 +33,40 @@ export class MyApp {
     public platform: Platform,
     public events: Events,
     public auth: AuthService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public translate: TranslateService
   ) {
+
+    translate.setDefaultLang('en');
 
     this.rootPage = MainPage;
 
     platform.ready()
-      .then(_ => {
+      .then(() => {
         StatusBar.styleDefault();
         Splashscreen.hide();
       });
 
-      this.platform.ready().then(_ => {
-        this.auth.getUserData()
-          .subscribe(data => {
-            if (!this.isAppInitialized) {
-              logger('info', 'user is logged in! goto to projects', data);
-              this.menu.enable(true);
-              this.nav.setRoot(ProjectsPage);
-              this.isAppInitialized = true;
-            }
-            this.user = data;
-          }, _ => {
-            logger('info', 'not logged in, goto login page');
-            this.menu.enable(false);
-            this.nav.setRoot(LoginPage)
-          });
-      });
+    this.platform.ready().then(() => {
+      this.auth.getUserData()
+        .subscribe(data => {
+          if (!this.isAppInitialized) {
+            logger('info', 'user is logged in! goto to projects', data);
+            this.menu.enable(true);
+            this.nav.setRoot(ProjectsPage);
+            this.isAppInitialized = true;
+          }
+          this.user = data;
+        }, err => {
+          logger('warn', 'not logged in, goto login page', { err });
+          this.menu.enable(false);
+          this.nav.setRoot(LoginPage)
+        });
+    });
+  }
+
+  changeLanguage(language): void {
+    this.translate.setDefaultLang(language);
   }
 
   screenshot(): void {

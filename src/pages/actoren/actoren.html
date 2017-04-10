@@ -16,7 +16,7 @@
     <ion-searchbar [formControl]="searchForm"></ion-searchbar>
   </ion-item>
   <ion-item>
-    <h2>Currently {{ totalActoren | async }} actoren</h2>
+    <h2>Op dit moment zijn er {{ totalActoren | async }} actor templates</h2>
     <ion-fab right middle>
       <button (click)="toggleCreateStatus()" ion-fab color="vibrant" mini><ion-icon name="add"></ion-icon></button>
       <ion-fab-list>
@@ -33,8 +33,22 @@
     </ion-item>
 
     <ion-item>
+      <ion-label color="primary" stacked>Image url</ion-label>
+      <ion-input type="text" placeholder="" formControlName="image"></ion-input>
+    </ion-item>
+
+    <ion-item>
       <ion-label color="primary" stacked>Description</ion-label>
       <ion-textarea type="text" rows="5" cols="30" placeholder="" formControlName="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Selecteer gebruikers</ion-label>
+      <ion-select formControlName="USER" multiple="true">
+        <ion-option *ngFor="let user of users | async" [value]="user.$key">
+          {{ user.name }}
+        </ion-option>
+      </ion-select>
     </ion-item>
 
     <ion-buttons end>
@@ -44,18 +58,51 @@
   </form>
 
   <ion-card class="hover-mouse" *ngFor="let actor of actoren | async | customSearch : term" (click)="updateActor(actor)">
+
     <ion-fab right>
       <button (click)="delete(actor.$key)" ion-fab mini><ion-icon name="md-trash"></ion-icon></button>
     </ion-fab>
 
     <ion-card-header>
       <h1>{{actor.name}}</h1>
+      <ion-avatar class="card-avatar"><img src="{{ actor.image }}"></ion-avatar>
     </ion-card-header>
 
     <ion-card-content>
       <p>{{actor.description}}</p>
     </ion-card-content>
+
+    <ion-item-divider ion-item light no-lines style="font-size: 1.4rem">
+      Personen
+      <ion-icon item-right name="md-people"></ion-icon>
+    </ion-item-divider>
+
+    <ion-card *ngFor="let user of actor.USER">
+      <div class=float-box>
+        <ion-card-content class="content">
+          <ion-avatar class="card-avatar"><img src="{{ (user | async )?.avatar }}"></ion-avatar>
+        </ion-card-content>
+
+        <ion-card-header class="header">
+          <h1> {{ (user | async )?.name }}</h1>
+          <ion-row>
+            <ion-col>
+              <button ion-button icon-left clear small>
+              <ion-icon name="contact"></ion-icon>
+              <div>{{ (user | async )?.email }}</div>
+            </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-left clear small>
+              <ion-icon name="md-call"></ion-icon>
+              <div>0622577498</div>
+            </button>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+      </div>
+
+    </ion-card>
+
   </ion-card>
-
-
 </ion-content>

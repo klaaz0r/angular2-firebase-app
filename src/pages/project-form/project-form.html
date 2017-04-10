@@ -1,15 +1,7 @@
-<!--
-  Generated template for the ProjectForm page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Project</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content>
@@ -18,7 +10,7 @@
 
     <ion-item>
       <ion-label color="primary" stacked>Name</ion-label>
-      <ion-input type="text" placeholder="" formControlName="name"></ion-input>
+      <ion-input [readonly]="true" type="text" placeholder="" formControlName="name"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -27,15 +19,22 @@
     </ion-item>
 
     <ion-item>
-      {{actoren | async | json}}
-      <ion-label>Actoren</ion-label>
-      <ion-select formControlName="ACTOR" multiple="true">
-        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" [selected]="actor.active">
+      <ion-label>Actor template</ion-label>
+      <ion-select formControlName="ACTOR" multiple="false">
+        <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="actor.active">
           {{ actor.name }}
         </ion-option>
       </ion-select>
     </ion-item>
 
+    <ion-card *ngIf="selectedActor">
+      <ion-card-header>
+        {{ selectedActor.name }}
+      </ion-card-header>
+      <ion-card-content>
+        {{ selectedActor.description }}
+      </ion-card-content>
+    </ion-card>
 
     <ion-buttons end>
       <button ion-button type="submit" color="secondary">Save</button>
@@ -43,6 +42,5 @@
     </ion-buttons>
 
   </form>
-
 
 </ion-content>

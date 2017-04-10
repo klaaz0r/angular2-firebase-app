@@ -42,22 +42,15 @@
       <p>{{project.description}}</p>
 
       <ion-item-divider ion-item light no-lines style="font-size: 1.4rem">
-        Actoren
+        Actor template
         <ion-icon item-right name="md-people"></ion-icon>
       </ion-item-divider>
 
-      <div *ngIf="project.ACTOR?.length > 0">
-        <div class="actor-project-list" *ngFor="let actor of project.ACTOR">
-          <button (click)="showActor(actor)" class="actor-button" ion-button item-left outline round>
-          {{ (actor | async )?.name }}
+      <div>
+        <button (click)="showActor(project.ACTOR)" class="actor-button" ion-button item-left outline round>
+          {{ (project.ACTOR | async )?.name }}
         </button>
-        </div>
       </div>
-      <div *ngIf="project.ACTOR?.length === undefined">
-        <p>Nog geen actoren!</p>
-      </div>
-
-
     </ion-card-content>
 
     <ion-item-divider class="author-box">

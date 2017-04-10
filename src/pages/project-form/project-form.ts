@@ -17,6 +17,7 @@ export class ProjectFormPage {
   projectForm: FormGroup;
   existingProject;
   actoren: any;
+  selectedActor: any;
 
   constructor(
     public navCtrl: NavController,
@@ -44,6 +45,10 @@ export class ProjectFormPage {
         return actoren
       })
 
+    this.projectForm.valueChanges
+      .debounceTime(200)
+      .subscribe(data => this.showActor(data));
+
 
     this.auth.getUserData()
       .subscribe(
@@ -55,9 +60,17 @@ export class ProjectFormPage {
       store.object(`projects/${navParams.get('key')}`)
         .subscribe(project => {
           this.populateForm(project);
+          this.showActor(project);
           this.existingProject = project;
         }, err => logger('error', 'getting navParam key', err));
     }
+  }
+
+  showActor(data: any) {
+    this.store.object(`actors/${data.ACTOR}`)
+      .subscribe(actor => {
+        this.selectedActor = actor;
+      }, err => logger('error', 'error getting actor', err))
   }
 
   populateForm(currentProject): void {

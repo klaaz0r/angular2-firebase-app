@@ -16,11 +16,20 @@
           <div class="avatar" (click)="screenshot()">
             <img src="{{user?.avatar}}">
           </div>
-          <h2> Hey, {{ user?.name }}! </h2>
+          <h2> {{ 'PROFILE.WELCOME' | translate }}, {{ user?.name }}! </h2>
           <h3>  {{ user?.email }} </h3>
         </div>
-
       </ion-item>
+
+      <ion-item>
+        change language?
+        <div class="country-flags">
+          <img (click)="changeLanguage('en')" src="assets/uk.png">
+          <img (click)="changeLanguage('de')" src="assets/de.png">
+          <img (click)="changeLanguage('fr')" src="assets/fr.png">
+        </div>
+      </ion-item>
+
 
 
       <ion-list>

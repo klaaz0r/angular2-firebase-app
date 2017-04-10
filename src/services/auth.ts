@@ -64,8 +64,8 @@ export class AuthService {
             providerPromise = this.loginWithGithub();
             break;
           default:
-            logger('error', 'no provider found!')
-            throw new Error('no provider found')
+            logger('error', 'no provider found!');
+            throw new Error('no provider found');
         }
         //resolve the promise
         return providerPromise
@@ -99,6 +99,7 @@ export class AuthService {
             name: authData.auth.email,
             email: authData.auth.email,
             emailVerified: false,
+            admin: false,
             provider: 'email',
             //gets a gravatar or a default one, lovely because it's easy
             avatar: `https://www.gravatar.com/avatar/${crypto.createHash('md5').update(authData.auth.email).digest('hex')}`
@@ -135,6 +136,7 @@ export class AuthService {
           .update(githubData.auth.uid, {
             name: githubData.auth.displayName,
             email: githubData.auth.email,
+            admin: false,
             provider: 'github',
             avatar: githubData.auth.photoURL
           });
@@ -163,6 +165,7 @@ export class AuthService {
           .update(googleData.auth.uid, {
             name: googleData.auth.displayName,
             email: googleData.auth.email,
+            admin: false,
             provider: 'google',
             avatar: googleData.auth.photoURL
           });

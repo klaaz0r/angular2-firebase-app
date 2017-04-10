@@ -29,6 +29,12 @@
   }
 }
 
+.country-flags {
+  img {
+    width: 30px;
+  }
+}
+
 .google-color {
   background-color: #dd4b39;
 
@@ -48,17 +54,22 @@
 
 .image-box {
   margin: auto;
-  width: 100%;
-}
 
-.canvas-box {
-  margin: auto;
-  width: 100%;
+  video {
+    border-radius: 150px;
+  }
 }
 
 .author-box {
   display: inline;
   background-color: #E3E3E3;
+}
+
+.actor-box {
+  img {
+    border-radius: 100px;
+    width: 50px;
+  }
 }
 
 .project-card {
@@ -73,19 +84,45 @@
   height: 25px;
 }
 
+.float-box {
+  position: relative;
+  float: left;
+
+  .header {
+    position: relative;
+    float: left;
+  }
+
+  .content {
+    position: relative;
+    float: left;
+  }
+}
+
+
+.card-avatar {
+  img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+  }
+}
+
 .avatar {
-  margin: auto;
-  width: 40%;
   cursor: pointer;
+  margin: auto;
+  width: 50%;
 
   h2,
   h3 {
     text-align: center;
   }
-  color: green;
 
   img {
-    border-radius: 100px;
+    margin: auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
   }
 }
 
@@ -107,9 +144,4 @@
   width: 1200px;
   height: 800px;
   filter: blur(5px);
-}
-
-.canvas-box {
-  // visibility: hidden;
-  // border-radius: 100px;
 }
