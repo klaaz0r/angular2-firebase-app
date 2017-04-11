@@ -11,7 +11,7 @@ export class MainPage {
   constructor(public events: Events, public navCtrl: NavController, public navParams: NavParams) {
     events.subscribe('title:updated', (data) => {
       if (data.menuState) {
-        this.title = "Projects";
+        this.title = 'Projects';
       } else {
         this.title = ' ';
       }

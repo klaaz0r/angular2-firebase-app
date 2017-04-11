@@ -29,7 +29,9 @@ export class ProjectFormPage {
   ) {
 
     this.projectForm = this.form.group({
-      name: ['', [<any>Validators.minLength(5)]], description: ['',], ACTOR: [[],]
+      name: ['', [<any>Validators.minLength(5)]],
+      description: ['',],
+      ACTOR: [[], [<any>Validators.required]]
     });
 
     //outstanding issue in ionic https://github.com/angular/angularfire2/issues/574
@@ -69,7 +71,9 @@ export class ProjectFormPage {
   showActor(data: any) {
     this.store.object(`actors/${data.ACTOR}`)
       .subscribe(actor => {
-        this.selectedActor = actor;
+        if (has('name', actor)) {
+          this.selectedActor = actor;
+        }
       }, err => logger('error', 'error getting actor', err))
   }
 
@@ -85,6 +89,10 @@ export class ProjectFormPage {
     event.preventDefault();// outstanding issue with ionic
     const timestamp = moment().format();
 
+    if (!isValid) {
+      this.presentToast('vul alles helemaal in!')
+      return;
+    }
     //add the author key to the project (we can populate these) but remove it
     //from an update so we don't overwrite the author!!
     const project = merge(dissoc('user', projectObj), { USER: this.user.$key });
@@ -109,7 +117,7 @@ export class ProjectFormPage {
     const key = this.existingProject.$key;
     logger('info', 'deleting project', key);
     this.store.remove(`projects/${key}`);
-    this.presentToast('deleted project');
+    this.presentToast('project is verwijderd');
     this.navCtrl.pop();
   }
 

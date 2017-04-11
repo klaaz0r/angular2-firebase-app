@@ -1,8 +1,9 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, ToastController, FabContainer } from 'ionic-angular';
+import { NavController, NavParams, MenuController, ToastController } from 'ionic-angular';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { StoreService } from '../../services/store';
+import { AuthService } from '../../services/auth';
 import { length } from 'ramda';
 import logger from '../../logger';
 
@@ -22,12 +23,14 @@ export class ActorenPage {
   actorCreateStatus: boolean = false;
   totalActoren: number;
   users: any;
+  user: any;
 
   constructor(
     public navCtrl: NavController,
     public menu: MenuController,
     public navParams: NavParams,
     public store: StoreService,
+    public auth: AuthService,
     private sanitizer: DomSanitizer,
     public toastCtrl: ToastController,
     public form: FormBuilder
@@ -37,12 +40,13 @@ export class ActorenPage {
       name: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
       image: ['http://www.gravatar.com/avatar', [<any>Validators.required, <any>Validators.minLength(5)]],
       description: ['', [<any>Validators.required, <any>Validators.minLength(50)]],
-      USER: [[],]
+      USER: [[], [<any>Validators.required]]
     });
 
     this.menu.enable(true);
     this.actoren = this.store.list('actors', true);
     this.users = this.store.list('users');
+    this.user = this.auth.getUser();
 
     this.totalActoren = this.actoren.map(actoren => length(actoren));
 
@@ -83,6 +87,11 @@ export class ActorenPage {
 
   save(actorObj: any, isValid: boolean, event: Event): void {
     event.preventDefault();// outstanding issue with ionic
+    if (!isValid) {
+      this.presentToast('vul alles helemaal in!')
+      return;
+    }
+
     if (this.selectedActor) {
       logger('info', 'update project', { key: this.selectedActor.$key, actorObj });
       this.store.update(`actors/${this.selectedActor.$key}`, actorObj);

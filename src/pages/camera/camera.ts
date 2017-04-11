@@ -12,8 +12,8 @@ export class CameraComponent {
   @ViewChild('video') video: ElementRef;
   @ViewChild('canvas') canvas: ElementRef;
 
-  user;
-  tookPicture;
+  user: any;
+  tookPicture: boolean;
 
   constructor(
     public viewCtrl: ViewController,
@@ -21,6 +21,8 @@ export class CameraComponent {
     public auth: AuthService,
     public toastCtrl: ToastController,
   ) {
+
+    logger('trace', 'camera component loading..');
 
     this.auth.getUserData()
       .subscribe(

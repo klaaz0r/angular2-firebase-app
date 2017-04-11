@@ -10,6 +10,7 @@ import { head, replace, has } from 'ramda';
 
 @Injectable()
 export class AuthService {
+  user: any;
 
   constructor(
     private af: AngularFire,
@@ -24,12 +25,20 @@ export class AuthService {
   getUserData() {
     return Observable.create(observer => {
       this.af.auth.subscribe(authData => {
+        logger('debug', 'auth state changed', { authData });
         if (authData) {
           this.store.object('users/' + authData.uid)
-            .subscribe(user => observer.next(user),
-            err => logger('error', 'user not authenticad', { err }));
+            .subscribe(user => {
+              logger('trace', 'returning new user', { user });
+              this.user = user;
+              observer.next(user);
+            },
+            err => {
+              logger('error', 'user not authenticad', { err });
+            });
         } else {
-          observer.error();
+          logger('error', 'no auth data found');
+          observer.error({ message: 'no user found' });
         }
       });
     });
@@ -93,18 +102,26 @@ export class AuthService {
   registerUser(credentials: any): Promise<any> {
     return this.af.auth.createUser(credentials)
       .then((authData: any) => {
-        logger('info', 'creatin user..', { authData })
-        this.af.database.list('users')
-          .update(authData.uid, {
-            name: authData.auth.email,
-            email: authData.auth.email,
-            emailVerified: false,
-            admin: false,
-            provider: 'email',
-            //gets a gravatar or a default one, lovely because it's easy
-            avatar: `https://www.gravatar.com/avatar/${crypto.createHash('md5').update(authData.auth.email).digest('hex')}`
-          });
-        credentials.created = true;
+        logger('info', 'email auth result', { authData });
+        return this.af.database.object(`users/${authData.uid}`)
+          .subscribe(user => {
+            logger('debug', 'found user', { authData });
+            if (!has('admin', user)) {
+              logger('trace', 'this is a new user', { user });
+              this.af.database.list('users')
+                .update(authData.uid, {
+                  name: authData.auth.email,
+                  email: authData.auth.email,
+                  emailVerified: false,
+                  admin: false,
+                  provider: 'email',
+                  //gets a gravatar or a default one, lovely because it's easy
+                  avatar: `https://www.gravatar.com/avatar/${crypto.createHash('md5').update(authData.auth.email).digest('hex')}`
+                });
+            }
+          }, err => {
+            logger('warn', 'something went wrong with getting the user', { err });
+          })
       })
       .catch(err => {
         return this.linkAccounts(credentials);
@@ -122,7 +139,10 @@ export class AuthService {
       method: AuthMethods.Password
     })
       .then(authData => authData)
-      .catch(error => error);
+      .catch(error => {
+        logger('error', 'wrong details', { error })
+        throw error
+      });
   }
 
   loginWithGithub(): Promise<any> {
@@ -132,14 +152,26 @@ export class AuthService {
     })
       .then(githubData => {
         logger('info', 'github auth result', { githubData });
-        this.af.database.list('users')
-          .update(githubData.auth.uid, {
-            name: githubData.auth.displayName,
-            email: githubData.auth.email,
-            admin: false,
-            provider: 'github',
-            avatar: githubData.auth.photoURL
-          });
+        //we check if the user already exists, because new users
+        //do not have admin property, if it has not, we will create
+        //a new user object with the avatar and other values etc.
+        this.af.database.object(`users/${githubData.auth.uid}`)
+          .subscribe(user => {
+            logger('debug', 'found user', { user });
+            if (!has('admin', user)) {
+              logger('trace', 'this is a new user', { user });
+              this.af.database.list('users')
+                .update(githubData.auth.uid, {
+                  name: githubData.auth.displayName,
+                  email: githubData.auth.email,
+                  admin: false,
+                  provider: 'github',
+                  avatar: githubData.auth.photoURL
+                });
+            }
+          }, err => {
+            logger('warn', 'something went wrong with getting the user', { err });
+          })
       })
       .catch((error: any) => {
         //the error we receive can be an error
@@ -161,14 +193,23 @@ export class AuthService {
     })
       .then(googleData => {
         logger('info', 'google auth result', { googleData });
-        this.af.database.list('users')
-          .update(googleData.auth.uid, {
-            name: googleData.auth.displayName,
-            email: googleData.auth.email,
-            admin: false,
-            provider: 'google',
-            avatar: googleData.auth.photoURL
-          });
+        this.af.database.object(`users/${googleData.auth.uid}`)
+          .subscribe(user => {
+            logger('debug', 'found user', { user });
+            if (!has('admin', user)) {
+              logger('trace', 'this is a new user', { user });
+              this.af.database.list('users')
+                .update(googleData.auth.uid, {
+                  name: googleData.auth.displayName,
+                  email: googleData.auth.email,
+                  admin: false,
+                  provider: 'google',
+                  avatar: googleData.auth.photoURL
+                });
+            }
+          }, err => {
+            logger('warn', 'something went wrong with getting the user', { err });
+          })
       })
       .catch((error: any) => {
         return this.linkAccounts(error);
@@ -177,6 +218,11 @@ export class AuthService {
         logger('error', 'authentication and attempted linking failed', { error });
         throw error;
       })
+  }
+
+  //if user data is needed later it's easier to just give the referance
+  getUser(): any {
+    return this.user;
   }
 
   logout(): void {

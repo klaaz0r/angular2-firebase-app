@@ -49,7 +49,9 @@ export class LoginPage {
   loginWithEmail(credentials: any, isValid: boolean): void {
     this.auth.loginWithEmail(credentials)
       .then(() => this.navCtrl.setRoot(ProjectsPage))
-      .catch(err => this.error = err)
+      .catch(({ message }) =>
+        this.toastCtrl.create({ message, duration: 3000, position: 'top' }).present()
+      )
   }
 
   loginWithGithub(): void {

@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
+import { App } from './app.component';
 import { AngularFireModule } from 'angularfire2';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -41,7 +41,7 @@ export function createTranslateLoader(http: Http) {
 
 @NgModule({
   declarations: [
-    MyApp,
+    App,
     MainPage,
     LoginPage,
     ActorenPage,
@@ -54,7 +54,7 @@ export function createTranslateLoader(http: Http) {
     PersonenPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(App),
     AngularFireModule.initializeApp(config),
     HttpModule,
     TranslateModule.forRoot({
@@ -69,7 +69,7 @@ export function createTranslateLoader(http: Http) {
     IonicApp
   ],
   entryComponents: [
-    MyApp,
+    App,
     MainPage,
     LoginPage,
     ActorenPage,

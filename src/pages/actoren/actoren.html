@@ -59,7 +59,7 @@
 
   <ion-card class="hover-mouse" *ngFor="let actor of actoren | async | customSearch : term" (click)="updateActor(actor)">
 
-    <ion-fab right>
+    <ion-fab *ngIf="user?.admin" right>
       <button (click)="delete(actor.$key)" ion-fab mini><ion-icon name="md-trash"></ion-icon></button>
     </ion-fab>
 

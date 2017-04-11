@@ -10,7 +10,7 @@
 
     <ion-item>
       <ion-label color="primary" stacked>Name</ion-label>
-      <ion-input [readonly]="true" type="text" placeholder="" formControlName="name"></ion-input>
+      <ion-input type="text" placeholder="" formControlName="name"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -20,7 +20,7 @@
 
     <ion-item>
       <ion-label>Actor template</ion-label>
-      <ion-select formControlName="ACTOR" multiple="false">
+      <ion-select required formControlName="ACTOR" multiple="false">
         <ion-option *ngFor="let actor of actoren | async" [value]="actor.$key" selected="actor.active">
           {{ actor.name }}
         </ion-option>

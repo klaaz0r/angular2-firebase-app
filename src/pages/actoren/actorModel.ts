@@ -7,6 +7,7 @@ import { Platform, NavParams, ViewController } from 'ionic-angular';
 })
 export class ActorModelPage {
   actor;
+  users: any[] = [];
 
   constructor(
     public platform: Platform,
@@ -14,7 +15,14 @@ export class ActorModelPage {
     public viewCtrl: ViewController,
     public store: StoreService
   ) {
-    this.actor = this.params.get('actor')
+    this.actor = this.params.get('actor');
+
+    this.actor.USER.map(key => {
+      console.log(key)
+      const user = this.store.object(`users/${key}`);
+      console.log(user)
+      this.users.push(user)
+    });
   }
 
   dismiss() {

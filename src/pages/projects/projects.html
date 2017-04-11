@@ -21,25 +21,31 @@
   <ion-item>
     <ion-searchbar [formControl]="searchForm"></ion-searchbar>
   </ion-item>
-  <ion-card class="hover-mouse" class="project-card" *ngFor="let project of projects | async | customSearch : term">
 
-    <ion-fab right>
+  <ion-card class="hover-mouse" class="project-card" *ngFor="let project of projects | async | customSearch : term">
+    <ion-fab *ngIf="user?.admin" right>
       <button ion-fab mini><ion-icon name="md-settings"></ion-icon></button>
       <ion-fab-list side="left">
         <button (click)="gotoProject(project.$key)" ion-fab><ion-icon name="md-create"></ion-icon></button>
-        <button (click)="deleteProject(project.$key)" ion-fab><ion-icon name="md-trash"></ion-icon></button>
+        <button (click)="archiveProject(project.$key)" ion-fab><ion-icon name="md-filing"></ion-icon></button>
       </ion-fab-list>
     </ion-fab>
 
+    <button *ngIf="project.archive" ion-button icon-left>
+      <ion-icon name="md-filing"></ion-icon>
+      Dit project is gearchiveer
+    </button>
+
     <ion-card-header>
+
       <ion-item-divider ion-item light no-lines style="font-size: 1.4rem">
         Project info
       </ion-item-divider>
-      <h1>{{project.name}}</h1>
+      <h1>{{ project.name }}</h1>
     </ion-card-header>
 
     <ion-card-content>
-      <p>{{project.description}}</p>
+      <p>{{ project.description }}</p>
 
       <ion-item-divider ion-item light no-lines style="font-size: 1.4rem">
         Actor template
@@ -67,7 +73,7 @@
 
   </ion-card>
 
-  <ion-fab right bottom>
+  <ion-fab *ngIf="user?.admin" right bottom>
     <button (click)="newProject()" ion-fab color="primery"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 

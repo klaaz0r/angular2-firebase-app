@@ -1,18 +1,55 @@
-<!--
-  Generated template for the Personen page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>personen</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Personen</ion-title>
+    <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+    <ion-buttons end>
+      <logout></logout>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-item>
+    <ion-searchbar [formControl]="searchForm"></ion-searchbar>
+  </ion-item>
+
+  <ion-card *ngFor="let user of users | async | customSearch : term">
+
+    <div class=float-box>
+      <ion-card-content class="content">
+        <ion-avatar class="card-avatar"><img src="{{ user.avatar }}"></ion-avatar>
+      </ion-card-content>
+
+      <ion-card-header class="header">
+        <h1> {{ user.name }}</h1>
+        <ion-row>
+          <ion-col>
+            <button ion-button icon-left clear small>
+            <ion-icon name="contact"></ion-icon>
+            <a href="mailto:{{ user.email }}" target="_top">{{ user.email }}</a>
+          </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-left clear small>
+            <ion-icon name="md-call"></ion-icon>
+            <div>0622577498</div>
+          </button>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>admin</ion-label>
+              <ion-toggle (click)="toggleAdmin(user)" checked="{{user.admin}}"></ion-toggle>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+
+    </div>
+
+  </ion-card>
+
 
 </ion-content>

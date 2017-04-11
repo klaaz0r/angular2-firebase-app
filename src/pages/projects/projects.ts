@@ -1,12 +1,13 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 import { NavController, NavParams, MenuController, ToastController, ModalController, Platform } from 'ionic-angular';
-import { StoreService } from "../../services/store";
-import { ProjectFormPage } from "../project-form/project-form";
+import { StoreService } from '../../services/store';
+import { AuthService } from '../../services/auth';
+import { ProjectFormPage } from '../project-form/project-form';
 import logger from '../../logger';
-import { FormControl } from "@angular/forms";
+import { FormControl } from '@angular/forms';
 import { ActorModelPage } from '../actoren/actorModel';
-
+import { merge, map } from 'ramda';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
@@ -18,6 +19,7 @@ export class ProjectsPage {
   projects: any;
   term: string = '';
   searchForm: FormControl;
+  user: any;
 
   constructor(
     public navCtrl: NavController,
@@ -28,10 +30,21 @@ export class ProjectsPage {
     public toastCtrl: ToastController,
     public modalCtrl: ModalController,
     public platform: Platform,
+    public auth: AuthService
   ) {
 
     this.menu.enable(true);
-    this.projects = this.store.list('projects', true);
+    this.projects = this.store.list('projects', true)
+      .map(projects => {
+        //let's not trust android people to
+        //always set an archive property
+        const newProjects = map(project =>
+          merge({ archive: false }, project), projects)
+        //sort them
+        return newProjects.sort((a, b) => a.archive > b.archive)
+      })
+      .catch(err => logger('error', 'could not get project', { err }));
+
     this.searchForm = new FormControl();
 
     this.searchForm.valueChanges
@@ -41,6 +54,7 @@ export class ProjectsPage {
       err => logger('error', 'error searching..', err)
       );
 
+    this.user = this.auth.getUser();
   }
 
   showActor(actor: any): void {
@@ -61,10 +75,10 @@ export class ProjectsPage {
     this.navCtrl.push(ProjectFormPage, { key: $key });
   }
 
-  deleteProject($key): void {
-    logger('info', 'deleting project', $key)
-    this.store.remove(`projects/${$key}`);
-    this.toastCtrl.create({ message: 'deleted project', duration: 750 }).present();
+  archiveProject($key): void {
+    logger('info', 'archiving project', $key)
+    this.store.update(`projects/${$key}`, { archive: true })
+    this.toastCtrl.create({ message: 'project gearchiveerd', duration: 750 }).present();
   }
 
   newProject(): void {

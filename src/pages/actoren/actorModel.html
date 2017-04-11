@@ -13,12 +13,40 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <!--  <ion-avatar item-left>
-       <img src="{{actor.image}}">
-        </ion-avatar>     -->
-      <h2>{{actor.name}}</h2>
-      <p>{{actor.description}}</p>
-
+      <ion-avatar item-left>
+        <img src="{{ actor.image }}">
+      </ion-avatar>
+      <h2>{{ actor.name }}</h2>
+      <p>{{ actor.description }}</p>
     </ion-item>
+
+    <ion-card *ngFor="let user of users">
+      <div class=float-box>
+        <ion-card-content class="content">
+          <ion-avatar class="card-avatar"><img src="{{ (user | async )?.avatar }}"></ion-avatar>
+        </ion-card-content>
+
+        <ion-card-header class="header">
+          <h1>{{ (user | async )?.name }}</h1>
+          <ion-row>
+            <ion-col>
+              <button ion-button icon-left clear small>
+              <ion-icon name="contact"></ion-icon>
+              <a href="mailto:{{ (user | async )?.email }}" target="_top">{{ (user | async )?.email }}</a>
+            </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-left clear small>
+              <ion-icon name="md-call"></ion-icon>
+              <div>{{ (user | async )?.phone }}</div>
+            </button>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+
+      </div>
+
+    </ion-card>
+
   </ion-list>
 </ion-content>
